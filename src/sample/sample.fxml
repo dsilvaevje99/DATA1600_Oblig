@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.collections.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<GridPane alignment="center" hgap="10" style="-fx-background-color: white;" vgap="10" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <columnConstraints>
       <ColumnConstraints />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints />
+      <RowConstraints />
+      <RowConstraints />
    </rowConstraints>
    <children>
-      <VBox prefHeight="574.0" prefWidth="452.0">
+      <VBox prefHeight="574.0" prefWidth="452.0" GridPane.rowIndex="2">
          <children>
             <GridPane prefHeight="353.0" prefWidth="452.0">
               <columnConstraints>
@@ -22,9 +26,10 @@
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
+                <RowConstraints />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -34,24 +39,62 @@
                   <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button fx:id="btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Submit" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
-                  <Label text="First Name" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <Label text="Age" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-                  <Label text="Birthday" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-                  <Label text="Email" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-                  <Label text="Cel number" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
-                  <DatePicker fx:id="birthday" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                  <TextField fx:id="firstName" GridPane.columnIndex="2" />
-                  <TextField fx:id="age" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                  <TextField fx:id="email" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                  <TextField fx:id="celNum" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                  <TextField fx:id="lastName" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                  <Label text="Last Name" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-                  <TextField GridPane.columnIndex="2" GridPane.rowIndex="8" />
-                  <ChoiceBox prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                  <Label text="Filtered Search" GridPane.halignment="CENTER" GridPane.rowIndex="8" />
-                  <Line endX="100.0" startX="-100.0" strokeWidth="0.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" />
-                  <Button mnemonicParsing="false" text="Search" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                  <Button fx:id="btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: #5ee05a; -fx-font-weight: 900;" text="Register" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+                     <font>
+                        <Font name="Corbel" size="14.0" />
+                     </font></Button>
+                  <Label text="First Name" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="Corbel" size="14.0" />
+                     </font></Label>
+                  <Label text="Age" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="Corbel" size="14.0" />
+                     </font></Label>
+                  <Label text="Birthday" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4">
+                     <font>
+                        <Font name="Corbel" size="14.0" />
+                     </font></Label>
+                  <Label text="Email" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="5">
+                     <font>
+                        <Font name="Corbel" size="14.0" />
+                     </font></Label>
+                  <Label text="Cel number" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="6">
+                     <font>
+                        <Font name="Corbel" size="14.0" />
+                     </font></Label>
+                  <DatePicker fx:id="birthday" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                  <TextField fx:id="firstName" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <TextField fx:id="age" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                  <TextField fx:id="email" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                  <TextField fx:id="celNum" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                  <TextField fx:id="lastName" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                  <Label text="Last Name" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="Corbel" size="14.0" />
+                     </font></Label>
+                  <TextField promptText="Search word..." style="-fx-border-color: #8f8f8f;" GridPane.columnIndex="2" GridPane.rowIndex="9">
+                     <font>
+                        <Font name="Corbel" size="14.0" />
+                     </font></TextField>
+                  <ChoiceBox fx:id="searchCategory" prefWidth="150.0" style="-fx-background-color: #f2f2f2; -fx-border-color: #8f8f8f;" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                      <items>
+                          <FXCollections fx:factory="observableArrayList">
+                              <String fx:value="Name" />
+                              <String fx:value="Age" />
+                              <String fx:value="Email" />
+                              <String fx:value="Cel Number" />
+                          </FXCollections>
+                      </items>
+                  </ChoiceBox>
+                  <Label style="-fx-padding: 5;" text="Search by..." GridPane.halignment="RIGHT" GridPane.rowIndex="9">
+                     <font>
+                        <Font name="Corbel" size="14.0" />
+                     </font></Label>
+                  <Button mnemonicParsing="false" style="-fx-border-color: #8f8f8f; -fx-padding: -1 6 -1 6;" text="🔍" GridPane.columnIndex="3" GridPane.rowIndex="9">
+                     <font>
+                        <Font size="19.0" />
+                     </font></Button>
                </children>
             </GridPane>
             <TableView prefHeight="341.0" prefWidth="452.0">
@@ -66,5 +109,10 @@
             </TableView>
          </children>
       </VBox>
+      <Label prefHeight="55.0" prefWidth="349.0" text="DATA1600: Oblig 1 - Person registry" textAlignment="JUSTIFY" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+         <font>
+            <Font name="System Bold" size="19.0" />
+         </font>
+      </Label>
    </children>
 </GridPane>
