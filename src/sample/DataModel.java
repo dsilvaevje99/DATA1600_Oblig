@@ -26,27 +26,27 @@ public class DataModel {
         this.celNumData = new SimpleStringProperty(celNumData);
     }
 
-    public String getfNameData() {
+    public String getFNameData() {
         return fNameData.getValue();
     }
-    public String getlNameData() {
+    public String getLNameData() {
         return lNameData.getValue();
     }
-    public int ageData() {
+    public int getAgeData() {
         return ageData.getValue();
     }
-    public String getbirthdayData() {
+    public String getBirthdayData() {
         return birthdayData.getValue();
     }
-    public String getemailData() {
+    public String getEmailData() {
         return emailData.getValue();
     }
-    public String getcelNumData() {
+    public String getCelNumData() {
         return celNumData.getValue();
     }
 
-    public void setfNameData(String fNameData) { this.fNameData.set(fNameData); }
-    public void setlNameData(String lNameData) { this.lNameData.set(lNameData); }
+    public void setFNameData(String fNameData) { this.fNameData.set(fNameData); }
+    public void setLNameData(String lNameData) { this.lNameData.set(lNameData); }
     public void setAgeData(int ageData) { this.ageData.set(ageData); }
     public void setBirthdayData(String birthdayData) { this.birthdayData.set(birthdayData); }
     public void setEmailData(String emailData) { this.emailData.set(emailData); }
