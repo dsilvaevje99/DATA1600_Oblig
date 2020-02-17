@@ -14,7 +14,6 @@ public class Controller implements Initializable {
 
     DataCollection collection = new DataCollection();
     PersonRegister register = new PersonRegister();
-    int index = 0;
 
 
     @FXML
@@ -37,8 +36,7 @@ public class Controller implements Initializable {
     @FXML
     private void addElementBtnClicked() {
         register.createPerson(firstName.getText(), lastName.getText(), calculateAge(birthday), birthday.getValue(), email.getText(), celNum.getText());
-        System.out.println(register.getPerson(0).getfName());
-        DataModel obj = createDataModelObjectFromGUI();
+        DataModel obj = createDataModelObjectFromGUI(register.getNewestPersonIndex());
 
         if(obj != null) {
             resetAllFields();
@@ -46,20 +44,18 @@ public class Controller implements Initializable {
         }
     }
 
-    private DataModel createDataModelObjectFromGUI() {
+    private DataModel createDataModelObjectFromGUI(int index) {
         String firstNameData = register.getPerson(index).getfName();
         String lastNameData = register.getPerson(index).getlName();
         String birthdayData = register.getPerson(index).getbDay().toString();
         String emailData = register.getPerson(index).getEmail();
         String celNumData = register.getPerson(index).getCelNum();
         int ageData = register.getPerson(index).getAge();
-        index++;
         try {
             return new DataModel(firstNameData, lastNameData, ageData, birthdayData, emailData, celNumData);
         } catch (IllegalArgumentException e) {
             return null;
         }
-
     }
 
     private void resetAllFields() {
