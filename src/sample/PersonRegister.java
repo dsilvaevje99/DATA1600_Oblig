@@ -12,13 +12,13 @@ import java.util.Scanner;
 
 public class PersonRegister {
 
-    ArrayList<String> personArrayList = new ArrayList<>();
+    ArrayList<Person> personArrayList = new ArrayList<>();
     String stringPath = new File("PersonRegistryFile.txt").getPath();
     Path realPath = Paths.get(stringPath);
 
     public void createPerson(String fName, String lName, int age, LocalDate bDay, String email, String celNum) {
         Person person = new Person(fName, lName, age, bDay, email, celNum);
-        personArrayList.add(person.toString());
+        personArrayList.add(person);
         try {
             savePersonToFile(personArrayList, realPath);
         } catch (IOException e) {
@@ -27,30 +27,42 @@ public class PersonRegister {
     }
 
     public Person getPerson(int index) {
-        String personString = personArrayList.get(index);
-        String[] personArray = personString.split(" ");
-
-        String firstNameData = personArray[0];
-        String lastNameData = personArray[1];
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate birthdayData = LocalDate.parse(personArray[2], formatter);
-        String emailData = personArray[3];
-        String celNumData = personArray[4];
-        int ageData = Integer.parseInt(personArray[5]);
+        String firstNameData = personArrayList.get(index).getfName();
+        String lastNameData = personArrayList.get(index).getlName();
+        LocalDate birthdayData = personArrayList.get(index).getbDay();
+        String emailData = personArrayList.get(index).getEmail();
+        String celNumData = personArrayList.get(index).getCelNum();
+        int ageData = personArrayList.get(index).getAge();
 
         Person person = new Person(firstNameData, lastNameData, ageData, birthdayData, emailData, celNumData);
         return person;
     }
 
-    public void savePersonToFile(ArrayList<String> array, Path path) throws IOException {
+    public void savePersonToFile(ArrayList<Person> array, Path path) throws IOException {
         Files.write(path, array.toString().getBytes(), StandardOpenOption.APPEND);
     }
 
     public void saveFileContentToArray() {
         Scanner scanner = new Scanner(stringPath);
         while (scanner.hasNextLine()) {
+            //A line from the file is saved in a string
             String line = scanner.nextLine();
-            personArrayList.add(line);
+            //Each word in the string represents an attribute and is separated into an array
+            String[] personStringToObject = line.split(",");
+
+            //Each attribute is saved from the array into it's own variable
+            String firstNameData = personStringToObject[0];
+            String lastNameData = personStringToObject[1];
+            //Formatter is needed to save birthday as LocalDate
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate birthdayData = LocalDate.parse(personStringToObject[2], formatter);
+            String emailData = personStringToObject[3];
+            String celNumData = personStringToObject[4];
+            int ageData = Integer.parseInt(personStringToObject[5]);
+
+            //A person is constructed from the attributes
+            Person person = new Person(firstNameData, lastNameData, ageData, birthdayData, emailData, celNumData);
+            personArrayList.add(person);
         }
     }
 
@@ -62,7 +74,7 @@ public class PersonRegister {
             index = 0;
         } else {
             //otherwise it will return the highest index in the array.
-            index = personArrayList.size() - 1;
+            index = personArrayList.size() - 2;
         }
         return index;
     }
