@@ -7,14 +7,14 @@ import javafx.scene.control.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
+import java.util.Scanner;
 
 public class Controller implements Initializable {
 
-
     DataCollection collection = new DataCollection();
     PersonRegister register = new PersonRegister();
-
 
     @FXML
     DatePicker birthday;
@@ -31,6 +31,31 @@ public class Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         collection.linkTableView(tableView);
+/*
+        //Add all people from file to table column on application launch
+        Scanner scanner = new Scanner(register.stringPath);
+        while (scanner.hasNextLine()) {
+            //A line from the file is saved in a string
+            String line = scanner.nextLine();
+            //Each word in the string represents an attribute and is separated into an array
+            String[] personStringToObject = line.split(",");
+
+            //Each attribute is saved from the array into it's own variable
+            String firstNameData = personStringToObject[0];
+            String lastNameData = personStringToObject[1];
+            String birthdayData = personStringToObject[2];
+            String emailData = personStringToObject[3];
+            String celNumData = personStringToObject[4];
+            int ageData = Integer.parseInt(personStringToObject[5]);
+
+            //A person is constructed from the attributes and added to the GUI table
+            DataModel person = new DataModel(firstNameData, lastNameData, ageData, birthdayData, emailData, celNumData);
+            if(person != null) {
+                collection.addElement(person);
+            }
+        }
+        scanner.close();
+*/
     }
 
     @FXML
