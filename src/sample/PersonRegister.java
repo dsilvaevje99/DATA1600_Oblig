@@ -13,11 +13,4 @@ public class PersonRegister implements Serializable {
         Person person = new Person(fName, lName, age, bDay, email, celNum);
         personArrayList.add(person);
     }
-
-    public Person getPerson(int index) {
-        return personArrayList.get(index);
-    }
-
-
-
 }

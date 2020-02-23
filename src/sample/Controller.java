@@ -1,19 +1,14 @@
 package sample;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
-import org.xml.sax.ErrorHandler;
-
-import java.awt.*;
 import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -86,35 +81,25 @@ public class Controller implements Initializable{
     private void searchBtnClicked(){
         value = searchCategory.getValue();
         query = searchBar.getText();
-
-        System.out.println(value);
-        System.out.println(query);
-
-
         try{
             switch (value) {
                 case "Name":
-                    System.out.println("searching Names for " + query);
                     ArrayList<Person> nameList = register.personArrayList.stream()
                             .filter(p -> p.getfName().startsWith(query)).collect(Collectors.toCollection(ArrayList::new));
-                    System.out.println(nameList.toString());
                     refreshList(nameList);
                     break;
                 case "Age":
-                    System.out.println("searching Ages for " + query);
                     int age = Integer.parseInt(query);
                     ArrayList<Person> ageList = register.personArrayList.stream()
                             .filter(p -> p.getAge() == age ).collect(Collectors.toCollection(ArrayList::new));
                     refreshList(ageList);
                     break;
                 case "Email":
-                    System.out.println("searching Emails for " + query);
                     ArrayList<Person> emailList = register.personArrayList.stream()
                             .filter(p -> p.getEmail() .startsWith(query)  ).collect(Collectors.toCollection(ArrayList::new));
                     refreshList(emailList);
                     break;
                 case "Cel Number":
-                    System.out.println("searching Cell numbers for " + query);
                     ArrayList<Person> numList = register.personArrayList.stream()
                             .filter(p -> p.getCelNum() .startsWith(query)  ).collect(Collectors.toCollection(ArrayList::new));
                     refreshList(numList);
