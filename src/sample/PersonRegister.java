@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class PersonRegister {
 
+    ErrorHandler error = new ErrorHandler();
     ArrayList<Person> personArrayList = new ArrayList<>();
     String stringPath = new File("PersonRegistryFile.txt").getPath();
 
@@ -15,7 +16,7 @@ public class PersonRegister {
         try {
             savePersonToFile();
         } catch (IOException e) {
-            e.printStackTrace();
+            error.alert("ERROR", "New person could not be created: \n"+e);
         }
     }
 

@@ -14,6 +14,7 @@ public class Controller implements Initializable {
 
     DataCollection collection = new DataCollection();
     PersonRegister register = new PersonRegister();
+    ErrorHandler error = new ErrorHandler();
 
     @FXML
     DatePicker birthday;
@@ -58,7 +59,7 @@ public class Controller implements Initializable {
             fr.close();
 
         } catch(IOException e) {
-            e.printStackTrace();
+            error.alert("ERROR", "Existing people could not be loaded into program: \n"+e);
         }
     }
 
@@ -83,6 +84,7 @@ public class Controller implements Initializable {
         try {
             return new DataModel(firstNameData, lastNameData, ageData, birthdayData, emailData, celNumData);
         } catch (IllegalArgumentException e) {
+            error.alert("ERROR", "Data could not be inserted into table: \n"+e);
             return null;
         }
     }
