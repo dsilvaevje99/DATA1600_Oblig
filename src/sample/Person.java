@@ -1,8 +1,9 @@
 package sample;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Person {
+public class Person implements Serializable {
     private String fName;
     private String lName;
     private int age;
@@ -64,4 +65,16 @@ public class Person {
     public void setEmail(String email) { this.email = email; }
 
     public void setCelNum(String celNum) { this.celNum = celNum; }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "fName='" + fName + '\'' +
+                ", lName='" + lName + '\'' +
+                ", age=" + age +
+                ", bDay=" + bDay +
+                ", email='" + email + '\'' +
+                ", celNum='" + celNum + '\'' +
+                '}';
+    }
 }
