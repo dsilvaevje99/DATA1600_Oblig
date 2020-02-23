@@ -1,61 +1,187 @@
 package sample;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.TextField;
+import org.xml.sax.ErrorHandler;
 
+import java.awt.*;
+import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
-public class Controller implements Initializable {
+public class Controller implements Initializable{
 
-
+    EmailValidator validator = new EmailValidator();
     DataCollection collection = new DataCollection();
     PersonRegister register = new PersonRegister();
+
+    String value, query;
 
 
     @FXML
     DatePicker birthday;
 
     @FXML
-    TextField firstName, email, celNum, lastName;
+    TextField firstName, email, celNum, lastName, fileNameBar, searchBar;
 
     @FXML
-    TableView tableView;
+    TableView<DataModel> tableView;
 
     @FXML
     TableColumn<DataModel, String> tableFirstName, tableLastName, tableAge, tableBirthday, tableEmail, tableCelNum;
 
+    @FXML
+    ChoiceBox<String> searchCategory;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        collection.linkTableView(tableView);
+        this.collection.linkTableView(this.tableView);
     }
 
     @FXML
     private void addElementBtnClicked() {
-        register.createPerson(firstName.getText(), lastName.getText(), calculateAge(birthday), birthday.getValue(), email.getText(), celNum.getText());
-        DataModel obj = createDataModelObjectFromGUI(register.getNewestPersonIndex());
 
-        if(obj != null) {
-            resetAllFields();
-            collection.addElement(obj);
+        try {
+
+            if (containsNumber(firstName.getText())){
+                firstName.setText("Can't contain numbers!");
+                throw new IllegalArgumentException("First name can't contain numbers!");
+            }
+            if (containsNumber(lastName.getText())){
+                lastName.setText("Can't contain numbers!");
+                throw new IllegalArgumentException("Last name can't contain numbers!");
+            }
+
+            if (!validator.validateEmail(email.getText())){
+                email.setText("Invalid email!");
+                throw new IllegalArgumentException("Email is invalid!");
+            }
+
+            if (containsLetter(celNum.getText())){
+                celNum.setText("Can't contain letters!");
+                throw new IllegalArgumentException("Telephone number is invalid!");
+            }
+
+            register.createPerson(firstName.getText(), lastName.getText(), calculateAge(birthday), birthday.getValue(), email.getText(), celNum.getText());
+            if(register != null) {
+                resetAllFields();
+                refreshList(register.personArrayList);
+            }else {
+                System.out.println("object is null!");
+            }
+        }catch (IllegalArgumentException e){
+            System.out.println("Exception occured: " + e);
         }
     }
 
-    private DataModel createDataModelObjectFromGUI(int index) {
-        String firstNameData = register.getPerson(index).getfName();
-        String lastNameData = register.getPerson(index).getlName();
-        String birthdayData = register.getPerson(index).getbDay().toString();
-        String emailData = register.getPerson(index).getEmail();
-        String celNumData = register.getPerson(index).getCelNum();
-        int ageData = register.getPerson(index).getAge();
+    @FXML
+    private void searchBtnClicked(){
+        value = searchCategory.getValue();
+        query = searchBar.getText();
+
+        System.out.println(value);
+        System.out.println(query);
+
+
+        try{
+            switch (value) {
+                case "Name":
+                    System.out.println("searching Names for " + query);
+                    ArrayList<Person> nameList = register.personArrayList.stream()
+                            .filter(p -> p.getfName().startsWith(query)).collect(Collectors.toCollection(ArrayList::new));
+                    System.out.println(nameList.toString());
+                    refreshList(nameList);
+                    break;
+                case "Age":
+                    System.out.println("searching Ages for " + query);
+                    int age = Integer.parseInt(query);
+                    ArrayList<Person> ageList = register.personArrayList.stream()
+                            .filter(p -> p.getAge() == age ).collect(Collectors.toCollection(ArrayList::new));
+                    refreshList(ageList);
+                    break;
+                case "Email":
+                    System.out.println("searching Emails for " + query);
+                    ArrayList<Person> emailList = register.personArrayList.stream()
+                            .filter(p -> p.getEmail() .startsWith(query)  ).collect(Collectors.toCollection(ArrayList::new));
+                    refreshList(emailList);
+                    break;
+                case "Cel Number":
+                    System.out.println("searching Cell numbers for " + query);
+                    ArrayList<Person> numList = register.personArrayList.stream()
+                            .filter(p -> p.getCelNum() .startsWith(query)  ).collect(Collectors.toCollection(ArrayList::new));
+                    refreshList(numList);
+                    break;
+            }
+        }catch (Exception e){
+            searchBar.setText("Invalid query!");
+        }
+
+    }
+
+    @FXML
+    private void saveBtnClicked(){
+        String filename = fileNameBar.getText();
+        if (filename.equals("")){
+            fileNameBar.setText("Invalid filename!");
+        } else {
+            try {
+                FileOutputStream fos = new FileOutputStream(filename + ".tmp");
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(register.personArrayList);
+            }catch (Exception e){
+                System.out.println("bro");
+            }
+        }
+    }
+
+    @FXML
+    public void loadBtnClicked() {
+        try {
+            String filename = fileNameBar.getText();
+            FileInputStream fis = new FileInputStream(filename + ".tmp");
+            ObjectInputStream ois =  new ObjectInputStream(fis);
+            register.personArrayList =  (ArrayList<Person>) ois.readObject();
+            ois.close();
+        } catch (FileNotFoundException e){
+            fileNameBar.setText("File not found!");
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        refreshList(register.personArrayList);
+    }
+
+    private DataModel createDataModelObjectFromGUI(int index, ArrayList<Person> register) {
+        String firstNameData = register.get(index).getfName();
+        String lastNameData = register.get(index).getlName();
+        String birthdayData = register.get(index).getbDay().toString();
+        String emailData = register.get(index).getEmail();
+        String celNumData = register.get(index).getCelNum();
+        int ageData = register.get(index).getAge();
+
         try {
             return new DataModel(firstNameData, lastNameData, ageData, birthdayData, emailData, celNumData);
         } catch (IllegalArgumentException e) {
+            System.out.println("error in creating new data model: " + e);
             return null;
         }
+    }
+
+    private void refreshList(ArrayList<Person> register){
+        collection.clearList();
+        tableView.getItems().clear();
+        for (int i = 0; i < register.size() ; i++) {
+            DataModel obj = createDataModelObjectFromGUI(i, register);
+            collection.addElement(obj);
+        }
+        tableView.setItems(collection.getList());
     }
 
     private void resetAllFields() {
@@ -71,5 +197,26 @@ public class Controller implements Initializable {
         Period diff = Period.between(birthday.getValue(), now);
         return diff.getYears();
     }
+
+    private boolean containsNumber(String string){
+        char[] chars = string.toCharArray();
+        for(char c : chars){
+            if(Character.isDigit(c)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean containsLetter(String string){
+        char[] chars = string.toCharArray();
+        for(char c : chars){
+            if(Character.isLetter(c)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 
 }
