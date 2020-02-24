@@ -41,10 +41,6 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button fx:id="btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addElementBtnClicked" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: #5ee05a; -fx-font-weight: 900;" text="Register" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
-                            <font>
-                                <Font name="Corbel" size="14.0" />
-                            </font></Button>
                         <Label text="First Name" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                             <font>
                                 <Font name="Corbel" size="14.0" />
@@ -61,11 +57,15 @@
                             <font>
                                 <Font name="Corbel" size="14.0" />
                             </font></Label>
-                        <DatePicker fx:id="birthday" prefHeight="17.0" prefWidth="113.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                         <TextField fx:id="firstName" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <TextField fx:id="lastName" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <DatePicker fx:id="birthday" prefHeight="17.0" prefWidth="113.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                         <TextField fx:id="email" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                         <TextField fx:id="celNum" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                        <TextField fx:id="lastName" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                        <Button fx:id="btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addElementBtnClicked" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: #5ee05a; -fx-font-weight: 900;" text="Register" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
+                            <font>
+                                <Font name="Corbel" size="14.0" />
+                            </font></Button>    
                         <TextField fx:id="fileNameBar" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                         <Label style="-fx-padding: 5;" text="Filename" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
                             <font>
