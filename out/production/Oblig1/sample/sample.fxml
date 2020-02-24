@@ -65,17 +65,12 @@
                         <Button fx:id="btn" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addElementBtnClicked" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: #5ee05a; -fx-font-weight: 900;" text="Register" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER">
                             <font>
                                 <Font name="Corbel" size="14.0" />
-                            </font></Button>    
-                        <TextField fx:id="fileNameBar" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                        <Label style="-fx-padding: 5;" text="Filename" GridPane.halignment="RIGHT" GridPane.rowIndex="8">
-                            <font>
-                                <Font name="Corbel" size="14.0" />
-                            </font></Label>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveBtnClicked" prefHeight="25.0" prefWidth="55.0" style="-fx-background-color: #5ee05a; -fx-font-weight: 900;" text="💾" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+                            </font></Button>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#saveBtnClicked" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: #5ee05a; -fx-font-weight: 900;" text="Save" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
                             <font>
                                 <Font name="Corbel" size="14.0" />
                             </font></Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loadBtnClicked" prefHeight="25.0" prefWidth="55.0" style="-fx-background-color: #5ee05a; -fx-font-weight: 900;" text="📲" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="8" GridPane.valignment="CENTER">
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#loadBtnClicked" prefHeight="25.0" prefWidth="78.0" style="-fx-background-color: #5ee05a; -fx-font-weight: 900;" text="Load" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER">
                             <font>
                                 <Font name="Corbel" size="14.0" />
                             </font></Button>

@@ -4,6 +4,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
+
 import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
@@ -14,7 +17,8 @@ import java.util.stream.Collectors;
 
 public class Controller implements Initializable{
 
-    EmailValidator validator = new EmailValidator();
+    FileChooser fileChooser = new FileChooser();
+    Validator validator = new Validator();
     DataCollection collection = new DataCollection();
     PersonRegister register = new PersonRegister();
 
@@ -25,7 +29,7 @@ public class Controller implements Initializable{
     DatePicker birthday;
 
     @FXML
-    TextField firstName, email, celNum, lastName, fileNameBar, searchBar;
+    TextField firstName, email, celNum, lastName,  searchBar;
 
     @FXML
     TableView<DataModel> tableView;
@@ -35,10 +39,12 @@ public class Controller implements Initializable{
 
     @FXML
     ChoiceBox<String> searchCategory;
+    private Window window;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.collection.linkTableView(this.tableView);
+        startup();
     }
 
     @FXML
@@ -46,13 +52,18 @@ public class Controller implements Initializable{
 
         try {
 
-            if (containsNumber(firstName.getText())){
-                firstName.setText("Can't contain numbers!");
+            if (!validator.validateName(firstName.getText())){
+                firstName.setText("Invalid name!");
                 throw new IllegalArgumentException("First name can't contain numbers!");
             }
-            if (containsNumber(lastName.getText())){
-                lastName.setText("Can't contain numbers!");
+            if (!validator.validateName(lastName.getText())){
+                lastName.setText("Invalid name!");
                 throw new IllegalArgumentException("Last name can't contain numbers!");
+            }
+
+            if(!validator.validateAge(birthday.getValue())){
+                birthday.getEditor().setText("Invalid age!");
+                throw new IllegalArgumentException("Age is invalid!");
             }
 
             if (!validator.validateEmail(email.getText())){
@@ -60,8 +71,8 @@ public class Controller implements Initializable{
                 throw new IllegalArgumentException("Email is invalid!");
             }
 
-            if (containsLetter(celNum.getText())){
-                celNum.setText("Can't contain letters!");
+            if (!validator.validateNumber(celNum.getText())){
+                celNum.setText("Invalid number!");
                 throw new IllegalArgumentException("Telephone number is invalid!");
             }
 
@@ -81,62 +92,44 @@ public class Controller implements Initializable{
     private void searchBtnClicked(){
         value = searchCategory.getValue();
         query = searchBar.getText();
-        try{
-            switch (value) {
-                case "Name":
-                    ArrayList<Person> nameList = register.personArrayList.stream()
-                            .filter(p -> p.getfName().startsWith(query)).collect(Collectors.toCollection(ArrayList::new));
-                    refreshList(nameList);
-                    break;
-                case "Age":
-                    int age = Integer.parseInt(query);
-                    ArrayList<Person> ageList = register.personArrayList.stream()
-                            .filter(p -> p.getAge() == age ).collect(Collectors.toCollection(ArrayList::new));
-                    refreshList(ageList);
-                    break;
-                case "Email":
-                    ArrayList<Person> emailList = register.personArrayList.stream()
-                            .filter(p -> p.getEmail() .startsWith(query)  ).collect(Collectors.toCollection(ArrayList::new));
-                    refreshList(emailList);
-                    break;
-                case "Cel Number":
-                    ArrayList<Person> numList = register.personArrayList.stream()
-                            .filter(p -> p.getCelNum() .startsWith(query)  ).collect(Collectors.toCollection(ArrayList::new));
-                    refreshList(numList);
-                    break;
-            }
-        }catch (Exception e){
-            searchBar.setText("Invalid query!");
-        }
-
+        filterList(value, query);
     }
 
     @FXML
     private void saveBtnClicked(){
-        String filename = fileNameBar.getText();
-        if (filename.equals("")){
-            fileNameBar.setText("Invalid filename!");
-        } else {
             try {
-                FileOutputStream fos = new FileOutputStream(filename + ".tmp");
+                fileChooser.setTitle("Choose File");
+                fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Temporary files", "*tmp"));
+                FileOutputStream fos = new FileOutputStream(fileChooser.showSaveDialog(window));
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(register.personArrayList);
             }catch (Exception e){
-                System.out.println("bro");
+                System.out.println(e);
             }
-        }
     }
 
     @FXML
     public void loadBtnClicked() {
         try {
-            String filename = fileNameBar.getText();
-            FileInputStream fis = new FileInputStream(filename + ".tmp");
+            fileChooser.setTitle("Choose File");
+            fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Temporary files", "*tmp"));
+            FileInputStream fis = new FileInputStream(fileChooser.showOpenDialog(window));
             ObjectInputStream ois =  new ObjectInputStream(fis);
             register.personArrayList =  (ArrayList<Person>) ois.readObject();
             ois.close();
-        } catch (FileNotFoundException e){
-            fileNameBar.setText("File not found!");
+        } catch (Exception e){
+            System.out.println(e);
+        }
+        refreshList(register.personArrayList);
+    }
+
+    @FXML
+    public void startup() {
+        try {
+            FileInputStream fis = new FileInputStream("SampleList.tmp");
+            ObjectInputStream ois =  new ObjectInputStream(fis);
+            register.personArrayList =  (ArrayList<Person>) ois.readObject();
+            ois.close();
         } catch (Exception e){
             System.out.println(e);
         }
@@ -156,6 +149,35 @@ public class Controller implements Initializable{
         } catch (IllegalArgumentException e) {
             System.out.println("error in creating new data model: " + e);
             return null;
+        }
+    }
+
+    private void filterList(String value, String query){
+
+        ArrayList<Person> filteredList = new ArrayList<>();
+        try{
+            switch (value) {
+                case "Name":
+                    filteredList = register.personArrayList.stream()
+                            .filter(p -> p.getfName().startsWith(query)).collect(Collectors.toCollection(ArrayList::new));
+                    break;
+                case "Age":
+                    int age = Integer.parseInt(query);
+                    filteredList = register.personArrayList.stream()
+                            .filter(p -> p.getAge() == age ).collect(Collectors.toCollection(ArrayList::new));
+                    break;
+                case "Email":
+                    filteredList = register.personArrayList.stream()
+                            .filter(p -> p.getEmail() .contains(query)  ).collect(Collectors.toCollection(ArrayList::new));
+                    break;
+                case "Cel Number":
+                    filteredList = register.personArrayList.stream()
+                            .filter(p -> p.getCelNum() .contains(query)  ).collect(Collectors.toCollection(ArrayList::new));
+                    break;
+            }
+            refreshList(filteredList);
+        }catch (Exception e){
+            searchBar.setText("Invalid query!");
         }
     }
 
@@ -182,26 +204,4 @@ public class Controller implements Initializable{
         Period diff = Period.between(birthday.getValue(), now);
         return diff.getYears();
     }
-
-    private boolean containsNumber(String string){
-        char[] chars = string.toCharArray();
-        for(char c : chars){
-            if(Character.isDigit(c)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean containsLetter(String string){
-        char[] chars = string.toCharArray();
-        for(char c : chars){
-            if(Character.isLetter(c)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
 }
